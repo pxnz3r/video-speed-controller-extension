@@ -23,6 +23,15 @@ A speed label appears in the top-left corner of every video. Hover over it to sh
 
 Click the video once so it has focus before using the keys. Keys are ignored while you're typing in a text field.
 
+## Popup settings
+
+Click the extension icon to open the popup. Reload the video page after changing a setting.
+
+- **Lock highest quality:** when a player loads an HLS master playlist (`.m3u8`), every variant below the highest resolution is removed before the player sees it. The player can't switch down to 360p because no lower option exists. This works for any HLS player, through `fetch` and `XMLHttpRequest`.
+- **High performance mode:** for players that expose hls.js as `window.Hls`, the buffer-ahead goes up from 30s to 120s (300 MB cap) and the starting bandwidth estimate goes up to 5 Mbps. Native `<video>` elements get `preload="auto"`.
+
+With quality locked, a slow stream server stalls instead of dropping resolution. If a site buffers a lot with the lock on, turn on performance mode too, or turn the lock off for that site.
+
 ## Behavior
 
 - The speed is saved in `chrome.storage.local` and applied to every video, across sites.
@@ -33,12 +42,16 @@ Click the video once so it has focus before using the keys. Keys are ignored whi
 ## Files
 
 - `manifest.json`: extension manifest (MV3, `storage` permission only)
-- `content.js`: the controller, shortcuts and video detection
+- `content.js`: the controller, shortcuts, video detection, and settings sync
+- `inject.js`: runs in the page's own JS world; filters HLS playlists and tunes hls.js
+- `popup.html`, `popup.js`: the settings popup
 
 ## Known limits
 
 - If a player captures keyboard events before the page sees them, the shortcuts won't fire. Use the hover buttons instead.
 - Players that draw video to a `<canvas>` instead of a `<video>` element aren't supported.
+- The quality lock only affects HLS streams. DASH, and plain MP4 files that come in a single quality, aren't changed.
+- Performance mode can't tune hls.js when a site bundles it privately instead of exposing `window.Hls`. Buffering caused by a slow stream server can't be fixed from the browser.
 
 ## License
 

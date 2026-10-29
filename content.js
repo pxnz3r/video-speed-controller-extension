@@ -13,9 +13,28 @@
   let hidden = false;
   const controllers = new Map();
 
-  chrome.storage.local.get({ rate: 1 }, (s) => {
+  let perf = false;
+
+  // Pass the popup toggles to inject.js (page world) through <html> data attributes.
+  function syncSettings(s) {
+    const ds = document.documentElement.dataset;
+    if ('quality' in s) ds.vscQuality = s.quality ? '1' : '0';
+    if ('perf' in s) {
+      perf = s.perf;
+      ds.vscPerf = perf ? '1' : '0';
+    }
+  }
+
+  chrome.storage.local.get({ rate: 1, quality: false, perf: false }, (s) => {
     rate = s.rate;
+    syncSettings(s);
     controllers.forEach((c, video) => applyRate(video));
+  });
+
+  chrome.storage.onChanged.addListener((changes) => {
+    const s = {};
+    for (const k of ['quality', 'perf']) if (k in changes) s[k] = changes[k].newValue;
+    syncSettings(s);
   });
 
   const round = (n) => Math.round(n * 100) / 100;
@@ -99,6 +118,8 @@
 
     parent.appendChild(host);
     controllers.set(video, { host, flash });
+
+    if (perf) video.preload = 'auto';
 
     video.addEventListener('ratechange', update);
     // Players often reset speed on source/quality change; put it back.

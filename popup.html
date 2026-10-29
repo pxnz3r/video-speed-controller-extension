@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { margin: 0; padding: 14px 16px; width: 260px; background: #18181b; color: #f4f4f5;
+      font: 14px/1.4 system-ui, sans-serif; }
+    h1 { font-size: 15px; margin: 0 0 12px; }
+    label { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; cursor: pointer; }
+    input { margin-top: 3px; accent-color: #8b5cf6; }
+    small { display: block; color: #a1a1aa; font-size: 12px; }
+    p { margin: 0; color: #a1a1aa; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Video Speed Controller</h1>
+  <label>
+    <input type="checkbox" id="quality">
+    <span>Lock highest quality<small>Removes lower resolutions from HLS streams so the player can't drop to 360p.</small></span>
+  </label>
+  <label>
+    <input type="checkbox" id="perf">
+    <span>High performance mode<small>Buffers up to 2 minutes ahead instead of 30s, to ride out slowdowns.</small></span>
+  </label>
+  <p>Reload the video page after changing these.</p>
+  <script src="popup.js"></script>
+</body>
+</html>
