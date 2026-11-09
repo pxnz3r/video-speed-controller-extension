@@ -79,26 +79,13 @@
         #bar { margin:10px; display:inline-flex; align-items:center; gap:2px;
           background:rgba(0,0,0,.6); color:#fff; border-radius:6px; padding:3px 6px;
           font:600 13px/1 system-ui,sans-serif; opacity:.3; transition:opacity .2s;
-          user-select:none; cursor:default; touch-action:manipulation; }
+          user-select:none; cursor:default; }
         #bar:hover, #bar.show { opacity:1; }
         #bar:not(:hover) button { display:none; }
         button { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.4);
-          border-radius:4px; padding:2px 7px; margin-left:4px; cursor:pointer;
-          font:inherit; touch-action:manipulation; }
+          border-radius:4px; padding:2px 7px; margin-left:4px; cursor:pointer; font:inherit; }
         button:hover { background:rgba(255,255,255,.2); }
-        #rate { min-width:3.2em; min-height:28px; display:inline-flex;
-          align-items:center; justify-content:center; text-align:center; }
-
-        /* Touchscreens have no reliable hover state: keep controls visible and tappable. */
-        @media (hover: none), (pointer: coarse) {
-          #bar { opacity:1; gap:3px; margin:6px; padding:5px; flex-wrap:wrap; }
-          #bar:not(:hover) button { display:inline-flex; align-items:center;
-            justify-content:center; min-width:34px; min-height:34px;
-            margin-left:0; padding:5px 8px; }
-          /* The hide button has no keyboard equivalent on a phone, so don't strand the UI. */
-          #bar button[data-a="toggle"] { display:none !important; }
-          #rate { min-height:34px; }
-        }
+        #rate { min-width:3.2em; text-align:center; }
       </style>
       <div id="bar">
         <span id="rate"></span>
